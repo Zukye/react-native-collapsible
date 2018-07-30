@@ -15,6 +15,7 @@ export default class Collapsible extends Component {
     style: ViewPropTypes.style,
     onAnimationEnd: PropTypes.func,
     children: PropTypes.node,
+    collapsedPointerEvents: PropTypes.oneOf(['box-none', 'none', 'box-only', 'auto'])
   };
 
   static defaultProps = {
@@ -23,6 +24,7 @@ export default class Collapsible extends Component {
     collapsedHeight: 0,
     duration: 300,
     easing: 'easeOutCubic',
+    collapsedPointerEvents: 'none',
     onAnimationEnd: () => null,
   };
 
@@ -165,7 +167,7 @@ export default class Collapsible extends Component {
   };
 
   render() {
-    const { collapsed } = this.props;
+    const { collapsed, collapsedPointerEvents } = this.props;
     const { height, contentHeight, measuring, measured } = this.state;
     const hasKnownHeight = !measuring && (measured || collapsed);
     const style = hasKnownHeight && {
@@ -196,7 +198,7 @@ export default class Collapsible extends Component {
       ];
     }
     return (
-      <Animated.View style={style} pointerEvents={collapsed ? 'none' : 'auto'}>
+      <Animated.View style={style} pointerEvents={collapsedPointerEvents}>
         <Animated.View
           ref={this._handleRef}
           style={[this.props.style, contentStyle]}
